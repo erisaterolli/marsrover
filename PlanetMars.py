@@ -51,10 +51,10 @@ class PlanetMars():
             direction = rover_details[2]
             try:
                 x, y = int(rover_details[0]), int(rover_details[1])
-                if direction in self.directions.keys():
+                if direction in self.allowed_directions:
                     return (x, y, direction)
                 else:
-                    raise ValueError("Incorrectly specified movement of the rover")
+                    raise ValueError("Incorrectly specified direction of the rover")
             except:
                 raise ValueError("Coordinates of the rover must of of type integer")
         else:
@@ -62,7 +62,13 @@ class PlanetMars():
             
     def extract_movements(self, line):
         """ Read the movements that a Rover should perform in the planet"""
-        return [i for i in line]
+        moves = []
+        for i in line:
+            if i in self.allowed_movements:
+                moves.append(i)
+            else:
+                raise ValueError("Incorrectly specified direction of the rover")
+        return moves
         
 def main():
     mars = PlanetMars()
