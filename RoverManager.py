@@ -52,7 +52,7 @@ class RoverManager():
                     self.moveForward(current_rover)
             final_x, final_y = current_rover.getPosition()
             self.occupied_position[final_x][final_y] = True
-            print final_x, final_y, self.opp_directions[current_rover.getDirection()]
+            #print final_x, final_y, self.opp_directions[current_rover.getDirection()]
     def turnLeft(self, rover):
         """Turns the rover 90 degree to the left"""
         rover.setDirection(rover.getDirection() + self.movements['L'])
@@ -88,12 +88,16 @@ class RoverManager():
         else:
             raise Exception("Rover can only move to a free place inside the planet")
         
-   
+    def getRoversFinalPosition(self):
+        for rover in self.rovers:
+            (x_fin, y_fin) = rover.getPosition()
+            print x_fin,y_fin, self.opp_directions[rover.getDirection()]
         
 def main():
-    mars = RoverManager([5,5], [[2,2 ,'E']], [['M', 'M', 'R', 'M', 'M', 'R', 'M', 'R', 'R', 'M']])
+    mars = RoverManager([5,5], [[3,3 ,'E']], [['M', 'M', 'R', 'M', 'M', 'R', 'M', 'R', 'R', 'M']])
     mars.createRoversObjects()
     mars.launchRoversSequantially()
+    mars.getRoversFinalPosition()
     
     
 if __name__ == '__main__':
