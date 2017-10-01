@@ -1,38 +1,38 @@
 ###
 # Author ET
 # Main Program. It will read the input file with the rovers initial positions and movements and it will print the final positions of each rover.
-# All directions of the rovers can be considered as angles in the two dimensional coordinate system. Movements of the rovers are presented on how much should the 
-# rover rotate in case of that movement. For instance if the current movement is Left the rover should rotate by 90degrees in the counterclock wise direction.
 ###
 
 import sys
 import Rover
-
+import RoverManager as rm
 class PlanetMars():
     allowed_movements = ['M', 'L', 'R']
     allowed_directions = ['E','N','W','S']
-    movements = {'M':0, 'L':90, 'R':270}
-    directions = {'E':0, 'N':90, 'W':180, 'S':270}
+
     
     def __init__(self):
         self.rovers = []
         self.instructions = []
+        self.coordinates = None
         
     def readInput(self):
         """ Read the input file"""
-        inFile = sys.argv[1]
-        if isinstance(inFile, str):
-            with open(inFile) as infile:
-                lines = infile.read().splitlines()
-                planet_coordinates = self.extract_coord(lines[0])
-                for line in lines[1::2]:
-                    (x,y,direction) = self.extract_rover(line)
-                    newRover = Rover.Rover(x, y, direction)
-                    self.rovers.append(newRover) 
-                for line in lines[2::2]:
-                    self.instructions.append(self.extract_movements(line))
-                
-        else:
+        try:
+            inFile = sys.argv[1]
+            if isinstance(inFile, str):
+                with open(inFile) as infile:
+                    lines = infile.read().splitlines()
+                    self.coordinates = self.extract_coord(lines[0])
+                    for line in lines[1::2]:
+                        (x,y,direction) = self.extract_rover(line)
+                        self.rovers.append([x, y, direction]) 
+                    for line in lines[2::2]:
+                        self.instructions.append(self.extract_movements(line))
+                    
+            else:
+                raise ValueError("You must specify the name of the input file")
+        except:
             raise ValueError("You must specify the name of the input file")
             
     
@@ -73,6 +73,10 @@ class PlanetMars():
 def main():
     mars = PlanetMars()
     mars.readInput()
+    
+    rvmanager = rm.RoverManager(mars.coordinates,mars.rovers, mars.instructions)
+    rvmanager.createRoversObjects()
+    rvmanager.launchRoversSequantially()
     
 if __name__ == '__main__':
     main()

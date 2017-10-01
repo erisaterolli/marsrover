@@ -13,18 +13,10 @@ class Rover():
         """Initialize a new Rover object."""
         self.x = x
         self.y = y
-        self.direction = direction
-        
+        self.direction = direction    
     def getPosition(self):
         """Return Rover object x coordinate."""
         return self.x, self.y
-        
-    def setPotision(self, new_x, new_y):
-        if isinstance(new_x, int) and isinstance(new_y, int):
-            self.x = new_x
-            self.y = new_y
-        else:
-            raise ValueError("Both x and y coordinate of Rover must be integer")
             
     def getDirection(self):
         """Return Rover object current direction."""
